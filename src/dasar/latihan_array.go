@@ -1,12 +1,16 @@
 package main
 
-import "fmt"
+import (
+  "fmt"
+  "os/exec"
+)
 
 func main() {
   var pilihan int;
-  var data = []string{};
+  var data = make([]string, 0);
   
   for pilihan != 3 {
+    exec.Command("clear").Output();
     fmt.Println("=================================");
     fmt.Println("==============  MENU  ===========");
     fmt.Println("=================================");
@@ -16,6 +20,7 @@ func main() {
     fmt.Println("Silahkan tentukan pilihan [1/2/3] ? ");
     fmt.Scanln(&pilihan);
     if pilihan == 2 {
+      exec.Command("clear").Output();
       var data_tmp string;
       fmt.Println("Ketik data baru: ");
       fmt.Scanln(&data_tmp);
@@ -23,6 +28,7 @@ func main() {
       fmt.Println("Data berhasil ditambahkan");
       fmt.Scanln();
     } else if pilihan == 1 {
+      exec.Command("clear").Output();
       fmt.Println("Daftar Data : ");
       for no, dt := range data {
         fmt.Printf("%v. %v \n", no, dt);

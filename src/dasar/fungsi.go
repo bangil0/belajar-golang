@@ -5,6 +5,15 @@ import (
   "math"
 )
 
+// contoh fungsi dengan parameter variadic atau satu parameter banyak isi
+func rataRata(daftar_nilai ...float32) (float32) {
+  var total float32; // buat penampung total
+  var banyak_nilai float32 = float32(len(daftar_nilai)); // hitung banyak nilai
+  for _, nilai := range daftar_nilai {
+    total += nilai;
+  }
+  return total/banyak_nilai;
+}
 
 // contoh fungsi biasa
 func hitungLuasSegitiga(alas, tinggi float32) float32 {
@@ -33,6 +42,7 @@ func main() {
   var luas_segitiga float32 = hitungLuasSegitiga(10.19, 20.21);
   var volume_kubus float32 = float32(volumeKubus(12));
   var luas_persegi float32 = float32(luasPersegi(12));
+  var nilai_siswa float32 = rataRata(1, 2, 3, 4, 5, 6, 7);
   /*
    * format string pada printf :
    * %v = format bawaan. cocok untuk kasus umum
@@ -42,4 +52,5 @@ func main() {
 	fmt.Printf("Volume kubus adalah %v cm \n", volume_kubus);
 	fmt.Printf("Luas persegi adalah %v cm \n", luas_persegi);
   fmt.Printf("Contoh fungsi yang mengembalikan 2 nilai : nilai pertama %v dan nilai kedua %v \n", hasil1, hasil2);
+  fmt.Printf("Contoh fungsi variadic atau satu parameter banyak isi seperti array. nilai rata-ratanya adalah %v \n", nilai_siswa);
 }
