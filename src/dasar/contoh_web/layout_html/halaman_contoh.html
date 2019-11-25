@@ -1,0 +1,21 @@
+{{define "halaman_contoh"}} {{/* INI BAGIAN YANG MENENTUKAN NAMA TEMPLATE*/}}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{template "bagian_head"}} {{/* include bagian head */}}
+  </head>
+  <body>
+    {{template "bagian_header"}} {{/* include bagian header */}}
+
+    INI KONTENNYA <br>
+    <p>Nama: {{.Nama}}</p>
+    <p>Umur: {{.Umur}}</p>
+    {{/* pembacaaan array/slice */}}
+    {{ range $no, $data := .Hobi }}
+      <li>{{ $data }}</li>
+    {{ end }}
+
+    {{template "bagian_footer"}} {{/* include bagian footer */}}
+  </body>
+</html>
+{{end}}

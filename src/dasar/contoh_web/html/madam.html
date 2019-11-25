@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title>Go learn net/http</title>
+  </head>
+  <body>
+    <p>Nama: {{.Nama}}</p>
+    <p>Umur: {{.Umur}}</p>
+    {{/* pembacaaan array/slice */}}
+    {{ range .Hobi }}
+      <li>{{ . }}</li>
+    {{ end }}
+</ul>
+  </body>
+</html>
