@@ -1,4 +1,4 @@
-package main
+package models
 
 import (
   "fmt"
@@ -12,17 +12,38 @@ type Siswa struct {
   Kelas string `json:"kelas"`
 }
 
-// method untuk koneksi ke database
 func db() (*sql.DB, error) {
-    db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/golang") // terhubung ke database
-    if err != nil { // cek error
-        return nil, err
-    }
-    return db, nil // kembalikan instansi database
+  db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/golang") // terhubung ke database
+  if err != nil { // cek error
+      return nil, err
+  }
+  return db, nil // kembalikan instansi database
 }
 
+// menambahkan method ke struct
+func (s Siswa) GetNama() (nama string) { // (s Siswa) menandakan method ini milik Siswa
+  nama = fmt.Sprintf("Nama Saya %v \n", s.Nama); // dan variabel s menjadi cara mengakses properti struct
+  return;
+}
 
-func getData() (data_siswa []Siswa) {
+func (s Siswa) GetKelas() (kelas string) { 
+  kelas = fmt.Sprintf("Saya kelas %v \n", s.Kelas);
+  return;
+}
+
+func (s *Siswa) SetId(id int) {
+  s.Id = id;
+}
+
+func (s *Siswa) SetNama(nama string) {
+  s.Nama = nama;
+}
+
+func (s *Siswa) SetKelas(kelas string) {
+  s.Kelas = kelas;
+}
+
+func (s *Siswa) GetData() (data_siswa []Siswa) {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
@@ -51,7 +72,7 @@ func getData() (data_siswa []Siswa) {
   return
 }
 
-func saveData(data_siswa Siswa) {
+func (data_siswa *Siswa) SaveData() {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
@@ -71,7 +92,7 @@ func saveData(data_siswa Siswa) {
   fmt.Println("AFFECTED ROWS ", rows_affected);
 }
 
-func updateData(data_siswa Siswa) {
+func (data_siswa *Siswa) UpdateData() {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
@@ -88,7 +109,7 @@ func updateData(data_siswa Siswa) {
 
   fmt.Println("AFFECTED ROWS ", rows_affected);
 }
-func deleteData(id string) {
+func (data_siswa *Siswa) DeleteData() {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
@@ -96,7 +117,7 @@ func deleteData(id string) {
   }
   defer db.Close() // tutup koneksi nanti 
   
-  hasil, err := db.Exec("DELETE FROM siswa WHERE id = ?", id);
+  hasil, err := db.Exec("DELETE FROM siswa WHERE id = ?", data_siswa.Id);
   if err != nil {
     fmt.Println(err);
     return
@@ -104,14 +125,5 @@ func deleteData(id string) {
   rows_affected, _ := hasil.RowsAffected(); // AMBIL BARIS YANG TERPENGARUH
 
   fmt.Println("AFFECTED ROWS ", rows_affected);
-}
-
-func main() {
-  var data_siswa []Siswa = getData(); // test ambil data dari database dan masukkan ke variabel
-  fmt.Println(data_siswa);
-  
-  saveData(Siswa{Nama: "Nama Baru", Kelas: "Kelas Baru"});
-  updateData(Siswa{Id: 12, Nama: "Nama Baru", Kelas: "Kelas Baru"});
-  deleteData("10");
 }
 

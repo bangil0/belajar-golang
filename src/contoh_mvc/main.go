@@ -9,12 +9,35 @@ import (
   "contoh_mvc/models"
 )
 
-func main() {
-  var madam = models.Siswa{};
-  madam.SetNama("Madam import dari amrik");
-  madam.SetKelas("Kelas Madam");
-  madam.SetUmur(21);
-  fmt.Println(madam.GetNama());
-  fmt.Println(madam.GetKelas());
-  fmt.Println(madam.GetUmur());
+func main() {  
+  var siswa models.Siswa;
+  
+  // AMBIL DATA
+  var data_siswa []models.Siswa = siswa.GetData();
+  fmt.Println(data_siswa);
+  
+  // ATUR DATA
+  siswa.SetNama("Nama dari models");
+  siswa.SetKelas("Kelas dari models");
+  
+  // SIMPAN DATA
+  siswa.SaveData();
+  
+  // ATUR DATA
+  siswa.SetId(10);
+  siswa.SetNama("Nama yang baru dari models");
+  siswa.SetKelas("Kelas baru dari models");
+  
+  // UPDATE DATA
+  siswa.UpdateData();
+  
+  // ATUR DATA
+  siswa.SetId(100);
+  
+  // HAPUS DATA
+  siswa.DeleteData();
+  
+  data_siswa = siswa.GetData();
+  fmt.Println(data_siswa);
+  
 }

@@ -1,0 +1,28 @@
+{{define "halaman_contoh_kondisi"}} {{/* INI BAGIAN YANG MENENTUKAN NAMA TEMPLATE*/}}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{template "bagian_head"}} {{/* include bagian head */}}
+  </head>
+  <body>
+    {{template "bagian_header"}} {{/* include bagian header */}}
+
+    {{$nilai:=20}} {{/* Buat variabel baru */}}
+    <p>Nilai Anda: {{$nilai}}</p>
+    
+    {{if ge $nilai 80 and le $nilai 100}} {{/* ge -> besar sama dengan , le -> kecil sama dengan */}}
+      Nilai Anda diantara 80 - 100
+    {{else if ge $nilai 60 and le $nilai 79}}
+      Nilai Anda diantara 60 - 79
+    {{else if ge $nilai 40 and le $nilai 59}}
+      Nilai Anda diantara 40 - 59
+    {{else if ge $nilai 20 and le $nilai 39}}
+      Nilai Anda diantara 20 - 39
+    {{else if ge $nilai 0 and le $nilai 19}}
+     Nilai Anda diantara 0 - 19
+    {{end}}
+
+    {{template "bagian_footer"}} {{/* include bagian footer */}}
+  </body>
+</html>
+{{end}}
