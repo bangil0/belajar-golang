@@ -6,6 +6,23 @@ import "html/template" // package untuk template engine
 
 // contoh penggunaan sistem template/layout 
 
+func LoadView(data map[string]interface{}, content string, templateName string, res http.ResponseWriter) {
+  // tentukan terlebih dahulu html mana saja yang akan dipakai
+  var layout = template.Must(template.ParseFiles(
+       "layout_html/bagian_head.html",
+       "layout_html/bagian_header.html",
+       content,
+       "layout_html/bagian_footer.html",
+   ))
+   
+  // cek file layout_html/halaman_contoh.html untuk mengecek nama templatenya dibagian DEFINE
+  var err = layout.ExecuteTemplate(res, templateName, data)
+  
+  // cek error
+  if err != nil {
+      http.Error(res, err.Error(), http.StatusInternalServerError)
+  }
+}
 
 func contoh(res http.ResponseWriter, req *http.Request) {
   // data yang akan dimasukkan kedalam html
@@ -15,21 +32,7 @@ func contoh(res http.ResponseWriter, req *http.Request) {
     "Umur": 24,
   }
   
-  // tentukan terlebih dahulu html mana saja yang akan dipakai
-  var layout = template.Must(template.ParseFiles(
-       "layout_html/bagian_head.html",
-       "layout_html/bagian_header.html",
-       "layout_html/halaman_contoh.html",
-       "layout_html/bagian_footer.html",
-   ))
-   
-  // cek file layout_html/halaman_contoh.html untuk mengecek nama templatenya dibagian DEFINE
-  var err = layout.ExecuteTemplate(res, "halaman_contoh", data)
-  
-  // cek error
-  if err != nil {
-      http.Error(res, err.Error(), http.StatusInternalServerError)
-  }
+  LoadView(data, "layout_html/halaman_contoh.html", "halaman_contoh", res);
 }
 
 func main() {

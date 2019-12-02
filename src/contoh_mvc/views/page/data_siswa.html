@@ -1,0 +1,21 @@
+{{define "data_siswa"}} {{/* INI BAGIAN YANG MENENTUKAN NAMA TEMPLATE*/}}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{template "bagian_head"}} {{/* include bagian head */}}
+  </head>
+  <body>
+    {{template "bagian_header"}} {{/* include bagian header */}}
+
+    <ol>
+    {{ range $no, $data := .DataSiswa }}
+      <li>{{ $data.Id }} - {{ $data.Nama }} - {{ $data.Kelas }}</li>
+    {{ end }}
+    </ol>
+    
+    {{template "bagian_footer"}} {{/* include bagian footer */}}
+    
+    <script src="assets/index.js"></script>
+  </body>
+</html>
+{{end}}
