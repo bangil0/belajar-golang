@@ -1,11 +1,10 @@
 package controllers
 
 import (
-  "fmt"
   "contoh_mvc/models"
   "contoh_mvc/helper"
   "net/http"
-  "encoding/json"
+  "strconv"
 )
 
 type Message struct {
@@ -20,53 +19,53 @@ var message Message;
 func ListSiswa(res http.ResponseWriter, req *http.Request){
   // untuk menentukan header response
   var data = map[string]interface{}{
-    "DataSiswa": siswa.GetData(),
+    "DataSiswa": siswa.SelectAll(),
   }
   
   helper.LoadView(data, "views/page/data_siswa.html", "data_siswa", res);
 }
-func GetSiswa(res http.ResponseWriter, req *http.Request){
-  // untuk menentukan header response
-  res.Header().Set("Content-Type", "application/json");
-  var response, _ = json.Marshal(struct {
-    Code int
-    Message string
-    Data []models.Siswa
-  }{
-    Code: 200,
-    Message: "Ok",
-    Data: siswa.GetData(),
-  });
-  fmt.Fprintln(res, string(response));
+
+func EditSiswa(res http.ResponseWriter, req *http.Request){
+  id, err := strconv.Atoi(req.FormValue("id_siswa")); // konversi string ke integer
+  if err == nil {
+    if req.Method == "POST" {
+      siswa.SetId(id);
+      siswa.SetNama(req.FormValue("nama"));
+      siswa.SetKelas(req.FormValue("kelas"));
+      siswa.Update();
+      http.Redirect(res, req, "/siswa", http.StatusSeeOther)
+    } else {
+      var id_siswa string = req.FormValue("id_siswa"); 
+      // untuk menentukan header response
+      var data = map[string]interface{}{
+        "DataSiswa": siswa.Select(id_siswa),
+      }
+      
+      helper.LoadView(data, "views/page/edit_siswa.html", "edit_siswa", res);
+    }
+  }  
 }
 
-func SaveSiswa(res http.ResponseWriter, req *http.Request){
-  // untuk menentukan header response
-  res.Header().Set("Content-Type", "application/json");
-  
-  if req.Method == "POST" {
+func AddSiswa(res http.ResponseWriter, req *http.Request){
+  if req.Method == "GET" {
+    helper.LoadView(nil, "views/page/add_siswa.html", "add_siswa", res);  
+  } else {
     siswa.SetNama(req.FormValue("nama"));
     siswa.SetKelas(req.FormValue("kelas"));
-    siswa.SaveData();
-    var response, _ = json.Marshal(struct {
-      Code int
-      Message string
-      Data []models.Siswa
-    }{
-      Code: 200,
-      Message: "Ok",
-    });
-    fmt.Fprintln(res, string(response));
-  } else {
-    var response, _ = json.Marshal(struct {
-      Code int
-      Message string
-    }{
-      Code: 404,
-      Message: "Not Found",
-    });
-    fmt.Fprintln(res, string(response));
+    siswa.Insert();
+    http.Redirect(res, req, "/siswa", http.StatusSeeOther)
   }
+  
 }
+func DeleteSiswa(res http.ResponseWriter, req *http.Request){
+  id, err := strconv.Atoi(req.FormValue("id_siswa")); // konversi string ke integer
+  if err == nil {
+    siswa.SetId(id);
+    siswa.Delete();
+  }
+  http.Redirect(res, req, "/siswa", http.StatusSeeOther)
+}
+
+
 
 

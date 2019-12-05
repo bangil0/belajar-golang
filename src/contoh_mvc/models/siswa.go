@@ -43,7 +43,7 @@ func (s *Siswa) SetKelas(kelas string) {
   s.Kelas = kelas;
 }
 
-func (s *Siswa) GetData() (data_siswa []Siswa) {
+func (s *Siswa) SelectAll() (data_siswa []Siswa) {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
@@ -72,7 +72,24 @@ func (s *Siswa) GetData() (data_siswa []Siswa) {
   return
 }
 
-func (data_siswa *Siswa) SaveData() {
+func (s *Siswa) Select(id string) (data_siswa Siswa) {
+  db, err := db() // ambil koneksi database ke variabel
+  if err != nil { // cek error
+    fmt.Println(err.Error())
+    return
+  }
+  defer db.Close() // tutup koneksi nanti 
+  
+  err = db.QueryRow("select * from siswa where id = ?", id).Scan(&data_siswa.Id, &data_siswa.Nama, &data_siswa.Kelas) // jalankan query sql
+  if err != nil { // cek eksekusi error
+      fmt.Println(err.Error())
+      return
+  }
+  
+  return
+}
+
+func (data_siswa *Siswa) Insert() {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
@@ -92,7 +109,7 @@ func (data_siswa *Siswa) SaveData() {
   fmt.Println("AFFECTED ROWS ", rows_affected);
 }
 
-func (data_siswa *Siswa) UpdateData() {
+func (data_siswa *Siswa) Update() {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
@@ -109,7 +126,7 @@ func (data_siswa *Siswa) UpdateData() {
 
   fmt.Println("AFFECTED ROWS ", rows_affected);
 }
-func (data_siswa *Siswa) DeleteData() {
+func (data_siswa *Siswa) Delete() {
   db, err := db() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())

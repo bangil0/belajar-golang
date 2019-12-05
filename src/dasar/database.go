@@ -4,6 +4,7 @@ import (
   "fmt"
   "database/sql" // datase
   _ "github.com/go-sql-driver/mysql" // import package db
+  "encoding/json"
 )
 
 type Siswa struct {
@@ -108,10 +109,15 @@ func deleteData(id string) {
 
 func main() {
   var data_siswa []Siswa = getData(); // test ambil data dari database dan masukkan ke variabel
-  fmt.Println(data_siswa);
+  var json, err = json.Marshal(data_siswa);
+  if err != nil {
+    fmt.Println(err);
+    return
+  }
+  fmt.Println(string(json));
   
-  saveData(Siswa{Nama: "Nama Baru", Kelas: "Kelas Baru"});
-  updateData(Siswa{Id: 12, Nama: "Nama Baru", Kelas: "Kelas Baru"});
-  deleteData("10");
+  //~ saveData(Siswa{Nama: "Nama Baru", Kelas: "Kelas Baru"});
+  //~ updateData(Siswa{Id: 12, Nama: "Nama Baru", Kelas: "Kelas Baru"});
+  //~ deleteData("10");
 }
 

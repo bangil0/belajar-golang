@@ -6,15 +6,31 @@
   </head>
   <body>
     {{template "bagian_header"}} {{/* include bagian header */}}
-
-    <ol>
-    {{ range $no, $data := .DataSiswa }}
-      <li>{{ $data.Id }} - {{ $data.Nama }} - {{ $data.Kelas }}</li>
-    {{ end }}
-    </ol>
+    
+    <h1>Data Siswa</h1>
+    <a href="siswa/add">Tambah Siswa</a>
+    <table>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Aksi</th>
+      </tr>
+      {{ range $no, $Siswa := .DataSiswa }}
+      <tr>
+        <td>{{ $no }}</td>
+        <td>{{ $Siswa.Nama }}</td>
+        <td>{{ $Siswa.Kelas }}</td>
+        <td>
+          <a href="siswa/edit?id_siswa={{ $Siswa.Id }}">Edit</a> | 
+          <a href="siswa/delete?id_siswa={{ $Siswa.Id }}">Delete</a>
+        </td>
+      </tr>
+      {{ end }}
+    </table>
+    
     
     {{template "bagian_footer"}} {{/* include bagian footer */}}
-    
     <script src="assets/index.js"></script>
   </body>
 </html>

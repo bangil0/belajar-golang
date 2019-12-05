@@ -1,0 +1,32 @@
+{{define "add_siswa"}} {{/* INI BAGIAN YANG MENENTUKAN NAMA TEMPLATE*/}}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{template "bagian_head"}} {{/* include bagian head */}}
+  </head>
+  <body>
+    {{template "bagian_header"}} {{/* include bagian header */}}
+    
+    <form action="/siswa/add" method="POST">
+    <h1>Tambah Siswa</h1>
+    <table>
+      <tr>
+        <td>Nama</td>
+        <td><input type="text" name="nama" /></td>
+      </tr>
+      <tr>
+        <td>Kelas</td>
+        <td><input type="text" name="kelas" /></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <button type="submit">Simpan</button>
+        </td>
+      </tr>
+    </table>
+    </form>
+    {{template "bagian_footer"}} {{/* include bagian footer */}}
+    <script src="assets/index.js"></script>
+  </body>
+</html>
+{{end}}
