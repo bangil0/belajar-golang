@@ -2,8 +2,7 @@ package models
 
 import (
   "fmt"
-  "database/sql" // datase
-  _ "github.com/go-sql-driver/mysql" // import package db
+  "contoh_mvc/database"
 )
 
 type Siswa struct {
@@ -12,23 +11,9 @@ type Siswa struct {
   Kelas string `json:"kelas"`
 }
 
-func db() (*sql.DB, error) {
-  db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/golang") // terhubung ke database
-  if err != nil { // cek error
-      return nil, err
-  }
-  return db, nil // kembalikan instansi database
-}
-
-// menambahkan method ke struct
-func (s Siswa) GetNama() (nama string) { // (s Siswa) menandakan method ini milik Siswa
-  nama = fmt.Sprintf("Nama Saya %v \n", s.Nama); // dan variabel s menjadi cara mengakses properti struct
-  return;
-}
-
-func (s Siswa) GetKelas() (kelas string) { 
-  kelas = fmt.Sprintf("Saya kelas %v \n", s.Kelas);
-  return;
+// method untuk inisialisasi model siswa baru
+func NewSiswaModel() Siswa {
+  return Siswa{}
 }
 
 func (s *Siswa) SetId(id int) {
@@ -44,14 +29,14 @@ func (s *Siswa) SetKelas(kelas string) {
 }
 
 func (s *Siswa) SelectAll() (data_siswa []Siswa) {
-  db, err := db() // ambil koneksi database ke variabel
+  db, err := database.Connect() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
     return
   }
   defer db.Close() // tutup koneksi nanti 
   
-  rows, err := db.Query("select * from siswa where ?", 1) // jalankan query sql
+  rows, err := db.Query("select * from siswa", 1) // jalankan query sql
   if err != nil { // cek eksekusi error
       fmt.Println(err.Error())
       return
@@ -73,7 +58,7 @@ func (s *Siswa) SelectAll() (data_siswa []Siswa) {
 }
 
 func (s *Siswa) Select(id string) (data_siswa Siswa) {
-  db, err := db() // ambil koneksi database ke variabel
+  db, err := database.Connect() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
     return
@@ -90,7 +75,7 @@ func (s *Siswa) Select(id string) (data_siswa Siswa) {
 }
 
 func (data_siswa *Siswa) Insert() {
-  db, err := db() // ambil koneksi database ke variabel
+  db, err := database.Connect() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
     return
@@ -110,7 +95,7 @@ func (data_siswa *Siswa) Insert() {
 }
 
 func (data_siswa *Siswa) Update() {
-  db, err := db() // ambil koneksi database ke variabel
+  db, err := database.Connect() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
     return
@@ -127,7 +112,7 @@ func (data_siswa *Siswa) Update() {
   fmt.Println("AFFECTED ROWS ", rows_affected);
 }
 func (data_siswa *Siswa) Delete() {
-  db, err := db() // ambil koneksi database ke variabel
+  db, err := database.Connect() // ambil koneksi database ke variabel
   if err != nil { // cek error
     fmt.Println(err.Error())
     return

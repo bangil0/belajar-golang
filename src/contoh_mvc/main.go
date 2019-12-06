@@ -10,14 +10,15 @@ import (
   "net/http"
 )
 
-func main() {  
+func main() {
+  var SiswaController controllers.SiswaController = controllers.NewSiswaController();
   // ROUTE
   // route
   
-  http.HandleFunc("/siswa", controllers.ListSiswa) 
-  http.HandleFunc("/siswa/edit", controllers.EditSiswa) 
-  http.HandleFunc("/siswa/add", controllers.AddSiswa) 
-  http.HandleFunc("/siswa/delete", controllers.DeleteSiswa) 
+  http.HandleFunc("/siswa", SiswaController.ListSiswa) 
+  http.HandleFunc("/siswa/edit", SiswaController.EditSiswa) 
+  http.HandleFunc("/siswa/add", SiswaController.AddSiswa) 
+  http.HandleFunc("/siswa/delete", SiswaController.DeleteSiswa) 
   
   // ROUTE UNTUK FILE STATIS
   http.Handle("/assets/",
